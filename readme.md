@@ -13,10 +13,12 @@ Edit `conf/storm_cluster.conf`
 
 # Command
 
+root permission needed
+
 * `bin/load_image.sh` loads docker images from `*_TAR` defined in `conf.conf`
 * `bin/kill.sh` stops and rm all related containers
 * `bin/start.sh` starts all related containers. But the storm web ui may take a while to show up.
-* `bin/start_storm_container.sh` will be copied into nimbus and supervisor containers to configure the corresponding container environments and exec storm cmds. Should not be executed manually
+* `bin/storm_container_start.sh` will be copied into nimbus and supervisor containers to configure the corresponding container environments and exec storm cmds. Should not be executed manually
 
 # Maintainer
 
