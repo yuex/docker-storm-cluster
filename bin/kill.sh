@@ -34,8 +34,9 @@ function iter_over_all {
     for name in \
         ${NIMBUS_CONTAINER_NAME} \
         ${ZK_CONTAINER_NAME} \
-        ${KAFKA_CONTAINER_NAME} \
-    ;do
+        #${KAFKA_CONTAINER_NAME} \
+
+    do
         $cmd ${name} &
     done
     wait
