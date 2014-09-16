@@ -7,6 +7,7 @@ Bash scripts to deploy a storm cluster **LOCALLY**
 Edit `conf/storm_cluster.conf`
 
 * `SUPERVISOR_NUM` defines the number of storm supervisors.
+* `NIMBUS_WEB_UI_PORT` defines which port the storm web ui to be binded to
 * `*_TAR` defines the path to the saved images
 * `*_IMAGE_TAG` defines the tag name after the images being loaded
 * `*_CONTAINER_NAME` defines the name used for container after ran from imagaes
