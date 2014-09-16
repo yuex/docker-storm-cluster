@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 source conf/storm_cluster.conf
 
-STORM_EXEC_SH=start_storm_container.sh
+STORM_EXEC_SH=storm_container_start.sh
 
 function it_may_take_a_while {
-    echo "access http://localhost:${NIMBUS_WEB_UI_PORT} to verify..."
     echo "the nimbus web ui may take a while to show up..."
     echo "try to refresh it for 10 secs..."
+    echo "nimbus web UI URL http://localhost"
 }
 
 echo -n "starting ${ZK_CONTAINER_NAME}..."
@@ -34,9 +34,8 @@ NIMBUS_IP=`docker inspect \
 echo "${NIMBUS_IP}...DONE"
 
 #NIMBUS_IP=172.17.0.3
-for num in `seq $SUPERVISOR_NUM`;do
-    name="${SUPERVISOR_CONTAINER_NAME_PREFIX}_${num}"
-    echo -n "starting ${name}..."
+function start_supervisor {
+    name=$1
     SUPERVISOR_CONTAINER_ID=`docker run \
         -it -d --name ${name} \
         -v $PWD/bin/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
@@ -47,7 +46,12 @@ for num in `seq $SUPERVISOR_NUM`;do
     SUPERVISOR_IP=`docker inspect \
         --format='{{.NetworkSettings.IPAddress}}' \
         ${SUPERVISOR_CONTAINER_ID}`
-    echo "${SUPERVISOR_IP}...DONE"
+    echo "starting ${name}...${SUPERVISOR_IP}...DONE"
+}
+for num in `seq $SUPERVISOR_NUM`;do
+    name="${SUPERVISOR_CONTAINER_NAME_PREFIX}_${num}"
+    start_supervisor ${name} &
 done
+wait
 
 it_may_take_a_while
