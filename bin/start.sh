@@ -6,7 +6,7 @@ STORM_EXEC_SH=storm_container_start.sh
 function it_may_take_a_while {
     echo "the nimbus web ui may take a while to show up..."
     echo "try to refresh it for 10 secs..."
-    echo "nimbus web UI URL http://localhost"
+    echo "nimbus web UI URL http://localhost:${NIMBUS_WEB_UI_PORT}"
 }
 
 echo -n "starting ${ZK_CONTAINER_NAME}..."
