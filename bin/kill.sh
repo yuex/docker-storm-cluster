@@ -9,6 +9,14 @@ function remove {
     echo "DONE"
 }
 
+function remove_force {
+    name=$1
+    echo -n "removing ${name}..."
+    docker ps -a | grep ${name} >/dev/null && \
+        docker rm -f ${name} >/dev/null
+    echo "DONE"
+}
+
 function stopit {
     name=$1
     echo -n "stopping ${name}..."
@@ -33,5 +41,6 @@ function iter_over_all {
     done
 }
 
-iter_over_all stopit
-iter_over_all remove
+#iter_over_all stopit
+#iter_over_all remove
+iter_over_all remove_force
