@@ -4,6 +4,7 @@ source conf/storm_cluster.conf
 STORM_EXEC_SH=start_storm_container.sh
 
 function it_may_take_a_while {
+    echo "access http://localhost:${NIMBUS_WEB_UI_PORT} to verify..."
     echo "the nimbus web ui may take a while to show up..."
     echo "try to refresh it for 10 secs..."
 }
@@ -20,7 +21,7 @@ echo "${ZK_IP}...DONE"
 #ZK_IP=172.17.0.2
 echo -n "starting ${NIMBUS_CONTAINER_NAME}..."
 NIMBUS_CONTAINER_ID=`docker run \
-    -it -d -p 8080:8080 \
+    -it -d -p ${NIMBUS_WEB_UI_PORT}:8080 \
     --name ${NIMBUS_CONTAINER_NAME} \
     -v $PWD/bin/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
     -v $PWD/jars:/opt/jars \
