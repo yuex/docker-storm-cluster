@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-source bin/conf.conf
+source conf/storm_cluster.conf
 
 STORM_EXEC_SH=start_storm_container.sh
 

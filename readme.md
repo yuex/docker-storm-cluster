@@ -4,7 +4,7 @@ Bash scripts to deploy a storm cluster **LOCALLY**
 
 # Config
 
-Edit `bin/conf.conf`
+Edit `conf/storm_cluster.conf`
 
 * `SUPERVISOR_NUM` defines the number of storm supervisors.
 * `*_TAR` defines the path to the saved images

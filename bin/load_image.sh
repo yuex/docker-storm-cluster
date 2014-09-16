@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-source bin/conf.conf
+source conf/storm_cluster.conf
 
 function docker_load {
     CMD="docker load < $1"
