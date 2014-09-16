@@ -11,10 +11,9 @@ function remove {
 
 function remove_force {
     name=$1
-    echo -n "removing ${name}..."
     docker ps -a | grep ${name} >/dev/null && \
         docker rm -f ${name} >/dev/null
-    echo "DONE"
+    echo "removing ${name}...DONE"
 }
 
 function stopit {
@@ -29,7 +28,7 @@ function iter_over_all {
     cmd=$1
     for num in `seq ${SUPERVISOR_NUM}`;do
         name="${SUPERVISOR_CONTAINER_NAME_PREFIX}_${num}"
-        $cmd ${name}
+        $cmd ${name} &
     done
 
     for name in \
@@ -37,8 +36,9 @@ function iter_over_all {
         ${ZK_CONTAINER_NAME} \
         ${KAFKA_CONTAINER_NAME} \
     ;do
-        $cmd ${name}
+        $cmd ${name} &
     done
+    wait
 }
 
 #iter_over_all stopit
