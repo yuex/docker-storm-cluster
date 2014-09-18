@@ -4,14 +4,25 @@ source conf/storm_cluster.conf
 
 function docker_load {
     CMD="docker load < $1"
-    echo -n "${CMD}..."
+    echo "${CMD}...LOADING"
     eval ${CMD}
-    echo "DONE"
+    echo "${CMD}...DONE"
 }
 
 function tag_newly_loaded_image {
     ID=`docker images|grep -e '^<none>\s\+<none>'|awk '{print $3}'`
     docker tag $ID $1
+}
+
+function load_and_tag_image {
+    image_name=$1
+    tag_name=$2
+    if [ ! -e ${image_name} ]; then
+        echo "${image_name} not found...EXIT"
+        exit -1
+    fi
+    docker_load ${image_name}
+    tag_newly_loaded_image ${tag_name}
 }
 
 function check_docker_image_none_none {
@@ -30,7 +41,7 @@ function check_name_sanity {
         PATTERN='^'"`echo $name|sed 's/:/\\\s\\\+/g'`"
         if `docker images | grep -e $PATTERN >/dev/null`; then
             echo "FAILED"
-            echo "$FUNCNAME: " "$name already existed"
+            echo "    $name already existed"
             exit -2
         fi
     done
@@ -41,11 +52,11 @@ check_docker_image_none_none
 
 check_name_sanity ${ZK_IMAGE_TAG} ${KAFKA_IMAGE_TAG} ${STORM_IMAGE_TAG}
 
-docker_load ${ZK_TAR}
-tag_newly_loaded_image ${ZK_IMAGE_TAG}
-
-#docker_load ${KAFKA_TAR}
-#tag_newly_loaded_image ${KAFKA_IMAGE_TAG}
-
-docker_load ${STORM_TAR}
-tag_newly_loaded_image ${STORM_IMAGE_TAG}
+for args in \
+    "${ZK_TAR} ${ZK_IMAGE_TAG}" \
+    "${STORM_TAR} ${STORM_IMAGE_TAG}" \
+    #"${KAFKA_TAR} ${KAFKA_IMAGE_TAG}" \
+do
+    eval load_and_tag_image "${args}"
+done
+wait
