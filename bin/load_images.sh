@@ -3,20 +3,20 @@ source lib/utils.sh
 source conf/storm_cluster.conf
 
 function docker_load {
-    CMD="docker load < $1"
-    echo "${CMD}...LOADING"
-    eval ${CMD}
-    echo "${CMD}...DONE"
+    local cmd="docker load < $1"
+    echo "${cmd}...LOADING"
+    eval ${cmd}
+    echo "${cmd}...DONE"
 }
 
 function tag_newly_loaded_image {
-    ID=`docker images|grep -e '^<none>\s\+<none>'|awk '{print $3}'`
-    docker tag $ID $1
+    local id=`docker images|grep -e '^<none>\s\+<none>'|awk '{print $3}'`
+    docker tag ${id} $1
 }
 
 function load_and_tag_image {
-    image_name=$1
-    tag_name=$2
+    local image_name=$1
+    local tag_name=$2
     if [ ! -e ${image_name} ]; then
         echo "${image_name} not found...EXIT"
         exit -1
@@ -38,8 +38,8 @@ function check_docker_image_none_none {
 function check_name_sanity {
     echo -n 'checking name sanity...'
     for name in $*;do
-        PATTERN='^'"`echo $name|sed 's/:/\\\s\\\+/g'`"
-        if `docker images | grep -e $PATTERN >/dev/null`; then
+        local pattern='^'"`echo $name|sed 's/:/\\\s\\\+/g'`"
+        if `docker images | grep -e ${pattern} >/dev/null`; then
             echo "FAILED"
             echo "    $name already existed"
             exit -2

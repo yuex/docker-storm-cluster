@@ -2,7 +2,8 @@
 source lib/utils.sh
 source conf/storm_cluster.conf
 
-STORM_EXEC_SH=lib/storm_container_start.sh
+STORM_EXEC_SH=storm_container_start.sh
+UTILS_PATH=/opt/utils
 
 function it_may_take_a_while {
     echo "the nimbus web ui may take a while to show up..."
@@ -24,11 +25,12 @@ echo -n "starting ${NIMBUS_CONTAINER_NAME}..."
 NIMBUS_CONTAINER_ID=`docker run \
     -it -d -p ${NIMBUS_WEB_UI_PORT}:8080 \
     --name ${NIMBUS_CONTAINER_NAME} \
-    -v $PWD/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
+    -v $PWD/lib:${UTILS_PATH}/lib \
+    -v $PWD/conf:${UTILS_PATH}/conf \
     -v $PWD/jars:/opt/jars \
     --entrypoint='/bin/bash' \
     ${STORM_IMAGE_TAG} \
-    /opt/utils/${STORM_EXEC_SH} nimbus ${ZK_IP}`
+    ${UTILS_PATH}/lib/${STORM_EXEC_SH} nimbus ${ZK_IP}`
 NIMBUS_IP=`docker inspect \
     --format='{{.NetworkSettings.IPAddress}}' \
     ${NIMBUS_CONTAINER_ID}`
@@ -36,19 +38,20 @@ echo "${NIMBUS_IP}...DONE"
 
 #NIMBUS_IP=172.17.0.3
 function start_supervisor {
-    name=$1
+    local name=$1
     SUPERVISOR_CONTAINER_ID=`docker run \
         -it -d --name ${name} \
-        -v $PWD/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
-        -v $PWD/jars:/opt/jars \
+        -v $PWD/lib:${UTILS_PATH}/lib \
+        -v $PWD/conf:${UTILS_PATH}/conf \
         --entrypoint='/bin/bash' \
         ${STORM_IMAGE_TAG} \
-        /opt/utils/${STORM_EXEC_SH} supervisor ${ZK_IP} ${NIMBUS_IP}`
+        ${UTILS_PATH}/lib/${STORM_EXEC_SH} supervisor ${ZK_IP} ${NIMBUS_IP}`
     SUPERVISOR_IP=`docker inspect \
         --format='{{.NetworkSettings.IPAddress}}' \
         ${SUPERVISOR_CONTAINER_ID}`
     echo "starting ${name}...${SUPERVISOR_IP}...DONE"
 }
+
 for num in `seq $SUPERVISOR_NUM`;do
     name="${SUPERVISOR_CONTAINER_NAME_PREFIX}_${num}"
     start_supervisor ${name} &
