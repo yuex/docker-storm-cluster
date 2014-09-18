@@ -28,7 +28,8 @@ function load_and_tag_image {
 function check_docker_image_none_none {
     echo -n "checking <none> <none> entry requirement..."
     if `docker images |grep '<none>' >/dev/null`;then
-        echo "$FUNCNAME: "'make sure there is no ' \
+        echo "FAILED"
+        echo '    make sure there is no ' \
             '<none> <none> entry in `docker images`'
         exit -1
     fi
