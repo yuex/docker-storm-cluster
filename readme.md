@@ -11,15 +11,17 @@ Edit `conf/storm_cluster.conf`
 * `*_TAR` defines the path to the saved images
 * `*_IMAGE_TAG` defines the tag name after the images being loaded
 * `*_CONTAINER_NAME` defines the name used for container after ran from imagaes
+* `*_TEMPLATE` defines the template config yaml in `conf/` for storm nimbus or supervisor
 
 # Command
 
-root permission needed
+Root permission needed because of docker.
 
-* `bin/load_image.sh` loads docker images from `*_TAR` defined in `conf/storm_cluster.conf`
+* `bin/load_image.sh` loads docker images from paths defined by `*_TAR`
+* `bin/remove_image.sh` removes images loaded from paths defined by `*_TAR`
 * `bin/start.sh` starts all related containers. But the storm web ui may take a while to show up.
 * `bin/kill.sh` stops and rm all related containers
-* `bin/storm_container_start.sh` will be copied into nimbus and supervisor containers to be executed. Should not be executed manually
+* `lib/storm_container_start.sh` will be copied into nimbus and supervisor containers to be executed. Should not be executed manually
 
 # Maintainer
 
