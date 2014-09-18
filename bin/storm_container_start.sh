@@ -9,11 +9,13 @@ NIMBUS_LOG_PATH=/var/log/nimbus.log
 NIMBUS_WEB_UI_LOG_PATH=/var/log/nimbus_web_ui.log
 SUPERVISOR_LOG_PATH=/var/log/supervisor.log
 
-HELP_MESSAGE="
-$0:\n
-USAGE:\n
-\t$0 nimbus {ZK_IP}\n
-\t$0 supervisor {ZK_IP} {NIMBUS_IP}\n
+CMD_NAME=`basename $0`
+
+HELP_MESSAGE="CMD:
+    ${CMD_NAME} - config and start a storm container
+USAGE:
+    ${CMD_NAME} nimbus {ZK_IP}
+    ${CMD_NAME} supervisor {ZK_IP} {NIMBUS_IP}
 "
 
 function start_as_nimbus {
@@ -52,7 +54,7 @@ function start_as_supervisor {
 }
 
 function help_and_exit {
-    echo -e ${HELP_MESSAGE}
+    echo -e "$HELP_MESSAGE"
     exit $1
 }
 
