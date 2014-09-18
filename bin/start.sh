@@ -24,7 +24,7 @@ echo -n "starting ${NIMBUS_CONTAINER_NAME}..."
 NIMBUS_CONTAINER_ID=`docker run \
     -it -d -p ${NIMBUS_WEB_UI_PORT}:8080 \
     --name ${NIMBUS_CONTAINER_NAME} \
-    -v $PWD/bin/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
+    -v $PWD/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
     -v $PWD/jars:/opt/jars \
     --entrypoint='/bin/bash' \
     ${STORM_IMAGE_TAG} \
@@ -39,7 +39,7 @@ function start_supervisor {
     name=$1
     SUPERVISOR_CONTAINER_ID=`docker run \
         -it -d --name ${name} \
-        -v $PWD/bin/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
+        -v $PWD/${STORM_EXEC_SH}:/opt/utils/${STORM_EXEC_SH} \
         -v $PWD/jars:/opt/jars \
         --entrypoint='/bin/bash' \
         ${STORM_IMAGE_TAG} \
