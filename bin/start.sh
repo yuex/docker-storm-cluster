@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
+source lib/utils.sh
 source conf/storm_cluster.conf
 
-STORM_EXEC_SH=storm_container_start.sh
+STORM_EXEC_SH=lib/storm_container_start.sh
 
 function it_may_take_a_while {
     echo "the nimbus web ui may take a while to show up..."

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+source lib/utils.sh
 source conf/storm_cluster.conf
 
 function remove_force {
