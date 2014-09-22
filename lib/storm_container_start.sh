@@ -61,7 +61,7 @@ function start_as_supervisor {
 
     # update storm.yaml
     modify_conf \
-        ${UTILS_PATH}/conf/${NIMBUS_CONF_TEMPLATE} \
+        ${UTILS_PATH}/conf/${SUPERVISOR_CONF_TEMPLATE} \
         ${STORM_PATH}/conf/storm.yaml
 
     ${STORM_CMD} supervisor &> ${SUPERVISOR_LOG_PATH} &
